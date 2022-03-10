@@ -20,12 +20,10 @@
     // Revisar si alguna variable está vacia, si lo está, regresar -1 como error.
     $variables = array($nombre, $codigo, $correo, $telefono, $password, $centro, $semestre);
     $vacio = false;
-    foreach($variables as $variable) 
+    foreach($variables as $variable)
     {
         if($variable == '') {
             $vacio = true;
-        }
-        if($vacio) {
             echo "-1";
             break;
         }
