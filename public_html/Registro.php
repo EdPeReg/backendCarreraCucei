@@ -27,9 +27,8 @@
             echo "-1";
             break;
         }
-    }
-    
-    // Seguir con normalidad si todas las variables están llenas.
+
+   // Seguir con normalidad si todas las variables están llenas.
     if(!$vacio) {
         // Creamos la conexion a la base de datos.
         $conn = mysqli_connect($server, $user, $passuser, $bd);
