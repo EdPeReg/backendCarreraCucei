@@ -27,9 +27,11 @@
             echo "-1";
             break;
         }
+    }
 
    // Seguir con normalidad si todas las variables están llenas.
-    if(!$vacio) {
+    if(!$vacio) 
+    {
         // Creamos la conexion a la base de datos.
         $conn = mysqli_connect($server, $user, $passuser, $bd);
         
@@ -54,6 +56,14 @@
             // Si el usuario se registro correctamente.
             if(mysqli_query($conn, $sql)) {
                 echo "1";
+
+                // Ahora vamos a insertar la estadística del usuario con inforamción por default.
+                $imagen = 'https://carreracuceipr.000webhostapp.com/Imagenes/avatar_default.png';
+                $sql_Estadistica_Table = "INSERT INTO EstadisticasC (Codigo, Distancia, Tiempo, Foto) 
+                                          VALUES('$codigo', '0', '0', '$imagen')";
+                                          
+                // Ejecutar el query para la tabla EstadisticasC
+                mysqli_query($conn, $sql_Estadistica_Table);
             } 
             // El usuario no se registo correctamente, algo esta mal en el query.
             else {
