@@ -1,9 +1,4 @@
 <?php
-    function hola()
-    {
-        return "hola como estas";
-    }
-
     /* Credenciales para identificar en la base de datos, lo sacas de database manager. */
 	$server = "localhost";          // Servidor en el cual se va a correr.
 	$user = "id18477189_usuario";   // dbuser.
