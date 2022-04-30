@@ -35,6 +35,12 @@
     $query = "SELECT Foto FROM EstadisticasC WHERE Codigo = $codigo";
     $result_foto = mysqli_query($conn, $query);
 
+    // Consulta para obtener la tabla del ranking de los corredores.
+    // Seleccionar y ordenar a los corredores dependiendo de sus puntos (calculados como distancia / tiempo).
+    // originando una nueva tabla donde ahora se tiene los puntos del corredor.
+    $query = "SELECT Codigo, Distancia, Tiempo, (Distancia / Tiempo) AS Puntos FROM EstadisticasC ORDER BY Puntos DESC";
+    $resultado_ranking = mysqli_query($conn, $query);
+    
     // Guardamos la informacion de la foto.
     if(mysqli_num_rows($result_foto) > 0)
     {
@@ -50,6 +56,37 @@
         while($row = mysqli_fetch_assoc($result)) {
             echo $row['Nombre'] . "," . $row['Codigo'] . "," . $row['Centro'] . "," . $totalCorredores->num_rows . "," . $foto;
         }
+
+        $i = 0;
+        $in_ranking = false;
+        define("MAX_PLACE", 3);
+
+        // Revisar nuestra tabla de ranking.
+        while(($row = mysqli_fetch_assoc($resultado_ranking)))
+        {
+            // Revisar si el codigo del usuario logeado está en los primeros tres lugares.
+            if($i != MAX_PLACE)
+            {
+                // Nuestro corredor si está en alguno de los primeros tres lugares.
+                if($row['Codigo'] == $codigo)
+                    $in_ranking = true;
+                $i++;
+            }
+            // Imprimir todo el ranking.
+            echo $row['Codigo'] . "," . $row['Distancia'] . "," . $row['Tiempo'] . ",";
+        }
+
+        // Sino está en los primeros tres lugares sólamente imprimir la distancia y el tiempo del corredor logeado al final, siendo los dos últimos datos los que nos interesa.
+        if(!$in_ranking)
+        {
+            $query = "SELECT Distancia, Tiempo FROM EstadisticasC WHERE Codigo = $codigo";
+            $result = mysqli_query($conn, $query);
+
+            while($row = mysqli_fetch_assoc($result))
+            {
+                echo $row['Distancia'] . "," . $row['Tiempo'];
+            }
+        }
     }
     // El usuario no se registo correctamente, algo esta mal en el query.
     else {
@@ -57,8 +94,4 @@
     }
 
     mysqli_close($conn);
-
-    // Incluir el codigo de ranking aqui para obtener un solo output
-    // donde mostrara la informacion del usuario mas el ranking separado por comas.
-    include 'Ranking.php';
 ?>
